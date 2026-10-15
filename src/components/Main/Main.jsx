@@ -1,58 +1,48 @@
+import { useState, useEffect } from 'react'
 import Column from '../Column/Column'
+import { cardList } from '../../data'
 
 function Main() {
-  const columnsData = [
-    {
-      title: 'Без статуса',
-      cards: [
-        { title: 'Название задачи', category: 'Web Design', date: '30.10.23', categoryClass: '_orange' },
-        { title: 'Название задачи', category: 'Research', date: '30.10.23', categoryClass: '_green' },
-        { title: 'Название задачи', category: 'Web Design', date: '30.10.23', categoryClass: '_orange' },
-        { title: 'Название задачи', category: 'Copywriting', date: '30.10.23', categoryClass: '_purple' },
-        { title: 'Название задачи', category: 'Web Design', date: '30.10.23', categoryClass: '_orange' },
-      ],
-    },
-    {
-      title: 'Нужно сделать',
-      cards: [
-        { title: 'Название задачи', category: 'Research', date: '30.10.23', categoryClass: '_green' },
-      ],
-    },
-    {
-      title: 'В работе',
-      cards: [
-        { title: 'Название задачи', category: 'Research', date: '30.10.23', categoryClass: '_green' },
-        { title: 'Название задачи', category: 'Copywriting', date: '30.10.23', categoryClass: '_purple' },
-        { title: 'Название задачи', category: 'Web Design', date: '30.10.23', categoryClass: '_orange' },
-      ],
-    },
-    {
-      title: 'Тестирование',
-      cards: [
-        { title: 'Название задачи', category: 'Research', date: '30.10.23', categoryClass: '_green' },
-      ],
-    },
-    {
-      title: 'Готово',
-      cards: [
-        { title: 'Название задачи', category: 'Research', date: '30.10.23', categoryClass: '_green' },
-      ],
-    },
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  const columns = [
+    'Без статуса',
+    'Нужно сделать',
+    'В работе',
+    'Тестирование',
+    'Готово',
   ]
 
   return (
     <main className="main">
       <div className="container">
         <div className="main__block">
-          <div className="main__content">
-            {columnsData.map((column, index) => (
-              <Column
-                key={index}
-                title={column.title}
-                cards={column.cards}
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="loading">Данные загружаются...</div>
+          ) : (
+            <div className="main__content">
+              {columns.map((columnTitle) => {
+                const columnCards = cardList.filter(
+                  (card) => card.status === columnTitle
+                )
+                return (
+                  <Column
+                    key={columnTitle}
+                    title={columnTitle}
+                    cards={columnCards}
+                  />
+                )
+              })}
+            </div>
+          )}
         </div>
       </div>
     </main>

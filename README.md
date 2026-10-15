@@ -1,16 +1,43 @@
-# React + Vite
+# Skypro Kanban
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Учебный проект — канбан-доска для ведения задач, созданный на React + Vite.
 
-Currently, two official plugins are available:
+## Стек
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- Vite
+- CSS (БЭМ-нейминг)
 
-## React Compiler
+## Структура проекта
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+src/
+├── components/
+│ ├── Card/ — карточка задачи
+│ ├── Column/ — колонка канбана
+│ ├── Main/ — основная доска
+│ ├── Header/ — шапка сайта
+│ ├── Calendar/ — календарь
+│ └── popups/
+│ ├── PopBrowse/ — попап просмотра задачи
+│ ├── PopNewCard/ — попап создания задачи
+│ └── PopUser/ — попап пользователя
+├── App.jsx
+├── App.css
+├── index.css
+└── main.jsx
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Что сделано в этой домашке
+
+- Перенесена вёрстка из `main.html` в `App.jsx`, атрибуты исправлены под JSX
+- Стили из `main.css` перенесены в `App.css`
+- Картинки перенесены в `public/images/`
+- Подключён шрифт Roboto через Google Fonts
+- Компонент `App` разбит на 8 отдельных компонентов
+- Модальные окна размещены в папке `popups`
+
+## Запуск проекта
+
+```bash
+npm install
+npm run dev

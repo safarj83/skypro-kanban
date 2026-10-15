@@ -1,10 +1,17 @@
-function Card({ title, category, date, categoryClass }) {
+function Card({ title, topic, date }) {
+  const topicClassMap = {
+    'Web Design': '_orange',
+    'Research': '_green',
+    'Copywriting': '_purple',
+  }
+  const categoryClass = topicClassMap[topic] || '_gray'
+
   return (
     <div className="cards__item">
       <div className="cards__card card">
         <div className="card__group">
           <div className={`card__theme ${categoryClass}`}>
-            <p className={categoryClass}>{category}</p>
+            <p className={categoryClass}>{topic}</p>
           </div>
           <a href="#popBrowse" target="_self">
             <div className="card__btn">
