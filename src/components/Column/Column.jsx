@@ -7,13 +7,12 @@ function Column({ title, cards }) {
         <p>{title}</p>
       </div>
       <div className="cards">
-        {cards.map((card, index) => (
+        {cards.map((card) => (
           <Card
-            key={index}
+            key={card.id}
             title={card.title}
-            category={card.category}
+            topic={card.topic}
             date={card.date}
-            categoryClass={card.categoryClass}
           />
         ))}
       </div>
