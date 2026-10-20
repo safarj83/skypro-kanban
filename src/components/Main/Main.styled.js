@@ -1,0 +1,33 @@
+import styled from 'styled-components'
+
+export const MainWrapper = styled.main`
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.background};
+  flex: 1;
+`
+
+export const MainBlock = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 25px 0 49px;
+
+  @media screen and (max-width: 1200px) {
+    padding: 40px 0 64px;
+  }
+`
+
+export const MainContent = styled.div`
+  width: 100%;
+  display: flex;
+
+  @media screen and (max-width: 1200px) {
+    display: block;
+  }
+`
+
+export const LoadingText = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 60px 0;
+`

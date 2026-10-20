@@ -1,5 +1,13 @@
 import { useState } from 'react'
 import PopUser from '../popups/PopUser/PopUser'
+import {
+  HeaderWrapper,
+  HeaderBlock,
+  HeaderLogo,
+  HeaderNav,
+  MainNewButton,
+  HeaderUser,
+} from './Header.styled'
 
 function Header() {
   const [isUserOpen, setIsUserOpen] = useState(false)
@@ -9,38 +17,37 @@ function Header() {
   }
 
   return (
-    <header className="header">
+    <HeaderWrapper>
       <div className="container">
-        <div className="header__block">
-          <div className="header__logo _show _light">
+        <HeaderBlock>
+          <HeaderLogo className="_show _light">
             <a href="" target="_self">
               <img src="/images/logo.png" alt="logo" />
             </a>
-          </div>
-          <div className="header__logo _dark">
+          </HeaderLogo>
+          <HeaderLogo className="_dark">
             <a href="" target="_self">
               <img src="/images/logo_dark.png" alt="logo" />
             </a>
-          </div>
-          <nav className="header__nav">
-            <button className="header__btn-main-new _hover01" id="btnMainNew">
+          </HeaderLogo>
+          <HeaderNav>
+            <MainNewButton id="btnMainNew">
               <a href="#popNewCard">Создать новую задачу</a>
-            </button>
-            <a
+            </MainNewButton>
+            <HeaderUser
               href="#user-set-target"
-              className="header__user _hover02"
               onClick={(e) => {
                 e.preventDefault()
                 toggleUser()
               }}
             >
               Ivan Ivanov
-            </a>
+            </HeaderUser>
             <PopUser isOpen={isUserOpen} onClose={() => setIsUserOpen(false)} />
-          </nav>
-        </div>
+          </HeaderNav>
+        </HeaderBlock>
       </div>
-    </header>
+    </HeaderWrapper>
   )
 }
 

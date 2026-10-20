@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Column from '../Column/Column'
 import { cardList } from '../../data'
+import { MainWrapper, MainBlock, MainContent, LoadingText } from './Main.styled'
 
 function Main() {
   const [isLoading, setIsLoading] = useState(true)
@@ -22,13 +23,13 @@ function Main() {
   ]
 
   return (
-    <main className="main">
+    <MainWrapper>
       <div className="container">
-        <div className="main__block">
+        <MainBlock>
           {isLoading ? (
-            <div className="loading">Данные загружаются...</div>
+            <LoadingText>Данные загружаются...</LoadingText>
           ) : (
-            <div className="main__content">
+            <MainContent>
               {columns.map((columnTitle) => {
                 const columnCards = cardList.filter(
                   (card) => card.status === columnTitle
@@ -41,11 +42,11 @@ function Main() {
                   />
                 )
               })}
-            </div>
+            </MainContent>
           )}
-        </div>
+        </MainBlock>
       </div>
-    </main>
+    </MainWrapper>
   )
 }
 
