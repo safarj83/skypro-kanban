@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import {
   PopUserWrapper,
   PopUserName,
@@ -17,8 +18,8 @@ function PopUser({ isOpen, onClose }) {
         <p>Темная тема</p>
         <input type="checkbox" className="checkbox" name="checkbox" />
       </PopUserTheme>
-      <PopUserBtn type="button" onClick={onClose}>
-        <a href="#popExit">Выйти</a>
+         <PopUserBtn type="button" onClick={onClose}>
+        <Link to="/exit">Выйти</Link>
       </PopUserBtn>
     </PopUserWrapper>
   )
