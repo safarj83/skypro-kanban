@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
-import Board from './pages/Board/Board'
+import Layout from './components/Layout/Layout'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Card from './pages/Card/Card'
@@ -13,40 +13,20 @@ function AppRoutes({ isAuth, setIsAuth }) {
     <Routes>
       <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
       <Route path="/register" element={<Register />} />
-      
+
       <Route 
-        path="/" 
         element={
           <ProtectedRoute isAuth={isAuth}>
-            <Board />
+            <Layout />
           </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/card/:id" 
-        element={
-          <ProtectedRoute isAuth={isAuth}>
-            <Card />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/new-task" 
-        element={
-          <ProtectedRoute isAuth={isAuth}>
-            <NewTask />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/exit" 
-        element={
-          <ProtectedRoute isAuth={isAuth}>
-            <Exit setIsAuth={setIsAuth} />
-          </ProtectedRoute>
-        } 
-      />
-      
+        }
+      >
+        <Route path="/" element={null} />
+        <Route path="/card/:id" element={<Card />} />
+        <Route path="/new-task" element={<NewTask />} />
+        <Route path="/exit" element={<Exit setIsAuth={setIsAuth} />} />
+      </Route>
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

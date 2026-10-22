@@ -1,54 +1,15 @@
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #EAEEF6;
-`
-
-const ExitBox = styled.div`
-  background: #FFF;
-  padding: 40px;
-  border-radius: 10px;
-  border: 0.7px solid #D4DBE5;
-  text-align: center;
-`
-
-const Title = styled.h2`
-  margin-bottom: 20px;
-  color: #000;
-`
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-`
-
-const PrimaryButton = styled.button`
-  background: #565EEF;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-`
-
-const SecondaryButton = styled.button`
-  background: transparent;
-  color: #565EEF;
-  border: 1px solid #565EEF;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-`
+import { useEffect } from 'react'
 
 function Exit({ setIsAuth }) {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [])
 
   const handleExit = () => {
     setIsAuth(false)
@@ -56,15 +17,19 @@ function Exit({ setIsAuth }) {
   }
 
   return (
-    <PageContainer>
-      <ExitBox>
-        <Title>Выйти из аккаунта?</Title>
-        <ButtonGroup>
-          <PrimaryButton onClick={handleExit}>Да, выйти</PrimaryButton>
-          <SecondaryButton onClick={() => navigate('/')}>Нет, остаться</SecondaryButton>
-        </ButtonGroup>
-      </ExitBox>
-    </PageContainer>
+    <div className="pop-exit" id="popExit">
+      <div className="pop-exit__container">
+        <div className="pop-exit__block">
+          <div className="pop-exit__ttl">
+            <h2>Выйти из аккаунта?</h2>
+          </div>
+          <div className="pop-exit__form-group">
+            <button className="pop-exit__exit-yes _hover01" onClick={handleExit}>Да, выйти</button>
+            <button className="pop-exit__exit-no _hover03" onClick={() => navigate('/')}>Нет, остаться</button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
