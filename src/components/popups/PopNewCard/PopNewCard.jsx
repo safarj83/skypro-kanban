@@ -21,11 +21,25 @@ function PopNewCard() {
               <form className="pop-new-card__form form-new" id="formNewCard" action="#">
                 <div className="form-new__block">
                   <label htmlFor="formTitle" className="subttl">Название задачи</label>
-                  <input className="form-new__input" type="text" name="name" id="formTitle" placeholder="Введите название задачи..." autoFocus />
+                  <input 
+                    className="form-new__input" 
+                    type="text" 
+                    name="name" 
+                    id="formTitle" 
+                    placeholder="Введите название задачи..." 
+                    autoComplete="off" 
+                    autoFocus 
+                  />
                 </div>
                 <div className="form-new__block">
                   <label htmlFor="textArea" className="subttl">Описание задачи</label>
-                  <textarea className="form-new__area" name="text" id="textArea" placeholder="Введите описание задачи..."></textarea>
+                  <textarea 
+                    className="form-new__area" 
+                    name="text" 
+                    id="textArea" 
+                    placeholder="Введите описание задачи..."
+                    autoComplete="off"
+                  ></textarea>
                 </div>
               </form>
               <Calendar dateText="Выберите срок исполнения" />

@@ -2,11 +2,11 @@ import { Outlet } from 'react-router-dom'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
 
-function Layout() {
+function Layout({ token }) {
   return (
     <>
       <Header />
-      <Main />
+      <Main token={token} />
       <Outlet />
     </>
   )

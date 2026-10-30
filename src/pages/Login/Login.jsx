@@ -1,5 +1,7 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { login } from '../../services/auth'
 
 const LoginContainer = styled.div`
   display: flex;
@@ -39,27 +41,84 @@ const Button = styled.button`
   border-radius: 4px;
   margin-top: 20px;
   cursor: pointer;
+  
+  &:disabled {
+    background: #94A6BE;
+    cursor: not-allowed;
+  }
 `
 
-function Login({ setIsAuth }) {
+const ErrorText = styled.p`
+  color: red;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 10px;
+`
+const StyledLink = styled(Link)`
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #94A6BE;
+`
+function Login({ setIsAuth, setToken }) {
   const navigate = useNavigate()
+  const [formData, setFormData] = useState({ login: '', password: '' })
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleLogin = async (e) => {
     e.preventDefault()
-    setIsAuth(true)
-    navigate('/')
+    setError(null)
+    setIsLoading(true)
+
+    try {
+      const user = await login(formData.login, formData.password)
+      localStorage.setItem('token', user.token)
+      setToken(user.token)
+      setIsAuth(true)
+      navigate('/')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <LoginContainer>
       <LoginForm onSubmit={handleLogin}>
         <Title>Вход</Title>
-        <Input type="text" name="email" id="email" placeholder="Эл. почта" required />
-        <Input type="password" name="password" id="password" placeholder="Пароль" required />
-        <Button type="submit">Войти</Button>
+        {error && <ErrorText>{error}</ErrorText>}
+        <Input 
+          type="text" 
+          name="login" 
+          placeholder="Эл. почта" 
+          value={formData.login} 
+          onChange={handleChange} 
+          required 
+        />
+        <Input 
+          type="password" 
+          name="password" 
+          placeholder="Пароль" 
+          value={formData.password} 
+          onChange={handleChange} 
+          required 
+        />
+                <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Загрузка...' : 'Войти'}
+        </Button>
+        <StyledLink to="/register">Нужно зарегистрироваться?</StyledLink>
       </LoginForm>
     </LoginContainer>
+    
   )
+  
 }
 
 export default Login

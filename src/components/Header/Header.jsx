@@ -32,9 +32,9 @@ function Header() {
             </a>
           </HeaderLogo>
           <HeaderNav>
-            <MainNewButton id="btnMainNew">
-              <a href="#popNewCard">Создать новую задачу</a>
-            </MainNewButton>
+           <MainNewButton id="btnMainNew">
+  <Link to="/new-task">Создать новую задачу</Link>
+</MainNewButton>
             <HeaderUser
               href="#user-set-target"
               onClick={(e) => {
