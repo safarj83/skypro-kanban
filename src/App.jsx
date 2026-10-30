@@ -5,14 +5,20 @@ import { Wrapper } from './App.styled'
 import AppRoutes from './AppRoutes'
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(() => !!localStorage.getItem('token'))
+  const [token, setToken] = useState(() => localStorage.getItem('token') || null)
 
   return (
     <>
       <GlobalStyle />
       <BrowserRouter>
         <Wrapper>
-          <AppRoutes isAuth={isAuth} setIsAuth={setIsAuth} />
+          <AppRoutes 
+            isAuth={isAuth} 
+            setIsAuth={setIsAuth} 
+            token={token}
+            setToken={setToken}
+          />
         </Wrapper>
       </BrowserRouter>
     </>
