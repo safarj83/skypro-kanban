@@ -1,12 +1,14 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Calendar from '../../Calendar/Calendar'
-import { getTaskById } from '../../../services/tasks'
+import { getTaskById, deleteTask } from '../../../services/tasks'
 
 function PopBrowse({ token }) {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [task, setTask] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -16,7 +18,7 @@ function PopBrowse({ token }) {
         const data = await getTaskById(id, token)
         setTask(data)
       } catch (error) {
-        console.error(error)
+        setError(error.message)
       } finally {
         setIsLoading(false)
       }
@@ -29,8 +31,32 @@ function PopBrowse({ token }) {
     }
   }, [id, token])
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '30.10.23'
+    const d = new Date(dateString)
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = String(d.getFullYear()).slice(-2)
+    return `${day}.${month}.${year}`
+  }
+
+  const handleDelete = async () => {
+    if (window.confirm('Вы уверены, что хотите удалить задачу?')) {
+      try {
+        await deleteTask(id, token)
+        navigate('/')
+      } catch (err) {
+        alert(err.message)
+      }
+    }
+  }
+
+  const handleEdit = () => {
+    alert('Редактирование задачи будет доступно позже')
+  }
+
   if (isLoading) return <div className="pop-browse">Загрузка...</div>
-  if (!task) return <div className="pop-browse">Задача не найдена</div>
+  if (error || !task) return <div className="pop-browse">Задача не найдена</div>
 
   const topicClassMap = {
     'Web Design': '_orange',
@@ -39,6 +65,7 @@ function PopBrowse({ token }) {
   }
   
   const categoryClass = topicClassMap[task.topic] || '_gray'
+  const statuses = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
 
   return (
     <div className="pop-browse" id="popBrowse">
@@ -55,11 +82,14 @@ function PopBrowse({ token }) {
             <div className="pop-browse__status status">
               <p className="status__p subttl">Статус</p>
               <div className="status__themes">
-                <div className={`status__theme ${task.status === 'Без статуса' ? '_gray' : '_hide'}`}><p>Без статуса</p></div>
-                <div className={`status__theme ${task.status === 'Нужно сделать' ? '_gray' : '_hide'}`}><p>Нужно сделать</p></div>
-                <div className={`status__theme ${task.status === 'В работе' ? '_gray' : '_hide'}`}><p>В работе</p></div>
-                <div className={`status__theme ${task.status === 'Тестирование' ? '_gray' : '_hide'}`}><p>Тестирование</p></div>
-                <div className={`status__theme ${task.status === 'Готово' ? '_gray' : '_hide'}`}><p>Готово</p></div>
+                {statuses.map((status) => (
+                  <div 
+                    key={status} 
+                    className={`status__theme ${task.status === status ? '_gray' : '_hide'}`}
+                  >
+                    <p className={task.status === status ? '_gray' : ''}>{status}</p>
+                  </div>
+                ))}
               </div>
             </div>
             
@@ -70,13 +100,17 @@ function PopBrowse({ token }) {
                   <textarea className="form-browse__area" name="text" id="textArea01" readOnly value={task.description || 'Описание отсутствует'}></textarea>
                 </div>
               </form>
-              <Calendar dateText={`Срок исполнения: ${new Date(task.date).toLocaleDateString('ru-RU')}`} />
+              <Calendar dateText={`Срок исполнения: ${formatDate(task.date)}`} />
             </div>
             
             <div className="pop-browse__btn-browse">
               <div className="btn-group">
-                <button className="btn-browse__edit _btn-bor _hover03"><a href="#">Редактировать задачу</a></button>
-                <button className="btn-browse__delete _btn-bor _hover03"><a href="#">Удалить задачу</a></button>
+                <button className="btn-browse__edit _btn-bor _hover03" onClick={handleEdit}>
+                  Редактировать задачу
+                </button>
+                <button className="btn-browse__delete _btn-bor _hover03" onClick={handleDelete}>
+                  Удалить задачу
+                </button>
               </div>
               <Link to="/" className="btn-browse__close _btn-bg _hover01" style={{ display: 'flex', alignItems: 'center' }}>Закрыть</Link>
             </div>

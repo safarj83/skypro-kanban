@@ -31,3 +31,38 @@ export const getTaskById = async (id, token) => {
   
   return data.task
 }
+
+export const addTask = async (token, taskData) => {
+  const response = await fetch(`${BASE_URL}/kanban`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(taskData),
+  })
+  
+  const data = await response.json()
+  
+  if (!response.ok) {
+    throw new Error(data.error || 'Ошибка при создании задачи')
+  }
+  
+  return data.tasks
+}
+
+export const deleteTask = async (id, token) => {
+  const response = await fetch(`${BASE_URL}/kanban/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  
+  const data = await response.json()
+  
+  if (!response.ok) {
+    throw new Error(data.error || 'Ошибка при удалении задачи')
+  }
+  
+  return data.tasks
+}

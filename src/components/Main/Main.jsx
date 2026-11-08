@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Column from '../Column/Column'
 import { getTasks } from '../../services/tasks'
 import { MainWrapper, MainBlock, MainContent, LoadingText } from './Main.styled'
@@ -15,9 +16,13 @@ function Main({ token }) {
   const [tasks, setTasks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  
+  const location = useLocation()
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
+      setError(null)
       try {
         const data = await getTasks(token)
         setTasks(data)
@@ -28,8 +33,10 @@ function Main({ token }) {
       }
     }
 
-    fetchData()
-  }, [token])
+    if (location.pathname === '/') {
+      fetchData()
+    }
+  }, [token, location.pathname])
 
   const columns = [
     'Без статуса',
