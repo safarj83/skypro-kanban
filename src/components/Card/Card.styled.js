@@ -91,13 +91,18 @@ export const CardContent = styled.div`
     color: inherit;
   }
 `
-
 export const CardTitle = styled.h3`
   font-size: 14px;
   font-weight: 500;
   line-height: 18px;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 10px;
+  
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
 `
 
 export const CardDate = styled.div`

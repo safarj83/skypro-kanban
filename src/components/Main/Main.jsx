@@ -1,18 +1,42 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Column from '../Column/Column'
-import { cardList } from '../../data'
+import { getTasks } from '../../services/tasks'
 import { MainWrapper, MainBlock, MainContent, LoadingText } from './Main.styled'
+import styled from 'styled-components'
 
-function Main() {
+const ErrorText = styled.div`
+  text-align: center;
+  color: red;
+  padding: 50px 0;
+  font-size: 18px;
+`
+
+function Main({ token }) {
+  const [tasks, setTasks] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  const location = useLocation()
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
+    const fetchData = async () => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const data = await getTasks(token)
+        setTasks(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-    return () => clearTimeout(timer)
-  }, [])
+    if (location.pathname === '/') {
+      fetchData()
+    }
+  }, [token, location.pathname])
 
   const columns = [
     'Без статуса',
@@ -28,10 +52,12 @@ function Main() {
         <MainBlock>
           {isLoading ? (
             <LoadingText>Данные загружаются...</LoadingText>
+          ) : error ? (
+            <ErrorText>{error}</ErrorText>
           ) : (
             <MainContent>
               {columns.map((columnTitle) => {
-                const columnCards = cardList.filter(
+                const columnCards = tasks.filter(
                   (card) => card.status === columnTitle
                 )
                 return (

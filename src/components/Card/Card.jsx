@@ -11,6 +11,15 @@ import {
 } from './Card.styled'
 
 function Card({ id, title, topic, date }) {
+  const formatDate = (dateString) => {
+    if (!dateString) return '30.10.23'
+    const d = new Date(dateString)
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = String(d.getFullYear()).slice(-2)
+    return `${day}.${month}.${year}`
+  }
+
   return (
     <CardItem>
       <CardWrapper>
@@ -40,7 +49,7 @@ function Card({ id, title, topic, date }) {
                 </clipPath>
               </defs>
             </svg>
-            <p>{date}</p>
+            <p>{formatDate(date)}</p>
           </CardDate>
         </CardContent>
       </CardWrapper>

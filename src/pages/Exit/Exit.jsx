@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
-function Exit({ setIsAuth }) {
+function Exit({ setIsAuth, setToken }) {
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -12,7 +12,9 @@ function Exit({ setIsAuth }) {
   }, [])
 
   const handleExit = () => {
-    setIsAuth(false)
+    localStorage.removeItem('token')
+    setToken(null)
+    setIsAuth(false) 
     navigate('/login')
   }
 
