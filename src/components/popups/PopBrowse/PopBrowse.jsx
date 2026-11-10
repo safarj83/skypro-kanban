@@ -1,24 +1,34 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Calendar from '../../Calendar/Calendar'
-import { getTaskById, deleteTask } from '../../../services/tasks'
+import { getTaskById } from '../../../services/tasks'
+import { useAuth } from '../../../context/AuthContext'
+import { useTasks } from '../../../context/TaskContext'
 
-function PopBrowse({ token }) {
+function PopBrowse() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { token } = useAuth()
+  const { deleteTask } = useTasks()
+  
   const [task, setTask] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+    const controller = new AbortController()
     
     const fetchTask = async () => {
+      if (!token) return
+      
       try {
-        const data = await getTaskById(id, token)
+        const data = await getTaskById(id, token, controller.signal)
         setTask(data)
       } catch (error) {
-        setError(error.message)
+        if (error.name !== 'AbortError') {
+          setError(error.message)
+        }
       } finally {
         setIsLoading(false)
       }
@@ -28,6 +38,7 @@ function PopBrowse({ token }) {
 
     return () => {
       document.body.style.overflow = 'unset'
+      controller.abort()
     }
   }, [id, token])
 
@@ -43,7 +54,7 @@ function PopBrowse({ token }) {
   const handleDelete = async () => {
     if (window.confirm('Вы уверены, что хотите удалить задачу?')) {
       try {
-        await deleteTask(id, token)
+        await deleteTask(id)
         navigate('/')
       } catch (err) {
         alert(err.message)
@@ -94,7 +105,8 @@ function PopBrowse({ token }) {
             </div>
             
             <div className="pop-browse__wrap">
-              <form className="pop-browse__form form-browse" id="formBrowseCard" action="#">
+              {/* Убрали action="#" и добавили onSubmit чтобы страница не прыгала */}
+              <form className="pop-browse__form form-browse" id="formBrowseCard" onSubmit={(e) => e.preventDefault()}>
                 <div className="form-browse__block">
                   <label htmlFor="textArea01" className="subttl">Описание задачи</label>
                   <textarea className="form-browse__area" name="text" id="textArea01" readOnly value={task.description || 'Описание отсутствует'}></textarea>

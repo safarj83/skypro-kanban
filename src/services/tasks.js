@@ -16,11 +16,12 @@ export const getTasks = async (token) => {
   return data.tasks
 }
 
-export const getTaskById = async (id, token) => {
+export const getTaskById = async (id, token, signal) => {
   const response = await fetch(`${BASE_URL}/kanban/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    signal
   })
   
   const data = await response.json()

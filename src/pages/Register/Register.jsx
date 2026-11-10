@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { register } from '../../services/auth'
+import { useAuth } from '../../context/AuthContext'
 
 const PageContainer = styled.div`
   display: flex;
@@ -64,6 +64,7 @@ const StyledLink = styled(Link)`
 
 function Register() {
   const navigate = useNavigate()
+  const { register } = useAuth()
   const [formData, setFormData] = useState({ name: '', login: '', password: '' })
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)

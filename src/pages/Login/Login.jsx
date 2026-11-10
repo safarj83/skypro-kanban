@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { login } from '../../services/auth'
+import { useAuth } from '../../context/AuthContext'
 
 const LoginContainer = styled.div`
   display: flex;
@@ -54,14 +54,17 @@ const ErrorText = styled.p`
   text-align: center;
   margin-bottom: 10px;
 `
+
 const StyledLink = styled(Link)`
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
   color: #94A6BE;
 `
-function Login({ setIsAuth, setToken }) {
+
+function Login() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [formData, setFormData] = useState({ login: '', password: '' })
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -77,10 +80,7 @@ function Login({ setIsAuth, setToken }) {
     setIsLoading(true)
 
     try {
-      const user = await login(formData.login, formData.password)
-      localStorage.setItem('token', user.token)
-      setToken(user.token)
-      setIsAuth(true)
+      await login(formData.login, formData.password)
       navigate('/')
     } catch (err) {
       setError(err.message)
@@ -110,15 +110,13 @@ function Login({ setIsAuth, setToken }) {
           onChange={handleChange} 
           required 
         />
-                <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading}>
           {isLoading ? 'Загрузка...' : 'Войти'}
         </Button>
         <StyledLink to="/register">Нужно зарегистрироваться?</StyledLink>
       </LoginForm>
     </LoginContainer>
-    
   )
-  
 }
 
 export default Login

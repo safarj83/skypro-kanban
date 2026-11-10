@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Calendar from '../../Calendar/Calendar'
-import { addTask } from '../../../services/tasks'
+import { useTasks } from '../../../context/TaskContext'
 
-function PopNewCard({ token }) {
+function PopNewCard() {
   const navigate = useNavigate()
+  const { addTask } = useTasks()
+  
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [topic, setTopic] = useState('Web Design')
@@ -24,15 +26,13 @@ function PopNewCard({ token }) {
     setError(null)
 
     try {
-
-      await addTask(token, {
+      await addTask({
         title: title || 'Новая задача',
         description,
         topic,
         status: 'Без статуса',
         date: new Date().toISOString(),
       })
-
       navigate('/')
     } catch (err) {
       setError(err.message)
@@ -48,57 +48,55 @@ function PopNewCard({ token }) {
           <div className="pop-new-card__content">
             <h3 className="pop-new-card__ttl">Создание задачи</h3>
             <Link to="/" className="pop-new-card__close">✖</Link>
-
+            
             {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
 
             <div className="pop-new-card__wrap">
               <form className="pop-new-card__form form-new" id="formNewCard" onSubmit={handleSubmit}>
                 <div className="form-new__block">
                   <label htmlFor="formTitle" className="subttl">Название задачи</label>
-                  <input
-                    className="form-new__input"
-                    type="text"
-                    id="formTitle"
-                    placeholder="Введите название задачи..."
-                    autoComplete="off"
-                    autoFocus
+                  <input 
+                    className="form-new__input" 
+                    type="text" 
+                    id="formTitle" 
+                    placeholder="Введите название задачи..." 
+                    autoComplete="off" 
+                    autoFocus 
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
                 <div className="form-new__block">
                   <label htmlFor="textArea" className="subttl">Описание задачи</label>
-                  <textarea
-                    className="form-new__area"
-                    id="textArea"
+                  <textarea 
+                    className="form-new__area" 
+                    id="textArea" 
                     placeholder="Введите описание задачи..."
                     autoComplete="off"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
-                <button type="submit" className="form-new__create _hover01" disabled={isLoading}>
-                  {isLoading ? 'Создание...' : 'Создать задачу'}
-                </button>
               </form>
               <Calendar dateText="Выберите срок исполнения" />
             </div>
+            
             <div className="pop-new-card__categories categories">
               <p className="categories__p subttl">Категория</p>
               <div className="categories__themes">
-                <div
+                <div 
                   className={`categories__theme _orange ${topic === 'Web Design' ? '_active-category' : ''}`}
                   onClick={() => setTopic('Web Design')}
                 >
                   <p className="_orange">Web Design</p>
                 </div>
-                <div
+                <div 
                   className={`categories__theme _green ${topic === 'Research' ? '_active-category' : ''}`}
                   onClick={() => setTopic('Research')}
                 >
                   <p className="_green">Research</p>
                 </div>
-                <div
+                <div 
                   className={`categories__theme _purple ${topic === 'Copywriting' ? '_active-category' : ''}`}
                   onClick={() => setTopic('Copywriting')}
                 >
@@ -106,6 +104,15 @@ function PopNewCard({ token }) {
                 </div>
               </div>
             </div>
+            
+            <button 
+              type="submit" 
+              className="form-new__create _hover01" 
+              disabled={isLoading} 
+              form="formNewCard"
+            >
+              {isLoading ? 'Создание...' : 'Создать задачу'}
+            </button>
           </div>
         </div>
       </div>
