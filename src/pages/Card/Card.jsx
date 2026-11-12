@@ -1,7 +1,3 @@
 import PopBrowse from '../../components/popups/PopBrowse/PopBrowse'
-
-function Card({ token }) {
-  return <PopBrowse token={token} />
-}
-
+function Card() { return <PopBrowse /> }
 export default Card

@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useAuth } from '../../context/AuthContext'
 
-function Exit({ setIsAuth, setToken }) {
+function Exit() {
   const navigate = useNavigate()
+  const { logout } = useAuth()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -12,9 +14,7 @@ function Exit({ setIsAuth, setToken }) {
   }, [])
 
   const handleExit = () => {
-    localStorage.removeItem('token')
-    setToken(null)
-    setIsAuth(false) 
+    logout()
     navigate('/login')
   }
 

@@ -1,27 +1,22 @@
-import { useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { GlobalStyle } from './GlobalStyle'
 import { Wrapper } from './App.styled'
 import AppRoutes from './AppRoutes'
+import { AuthProvider } from './context/AuthContext'
+import { TaskProvider } from './context/TaskContext'
 
 function App() {
-  const [isAuth, setIsAuth] = useState(() => !!localStorage.getItem('token'))
-  const [token, setToken] = useState(() => localStorage.getItem('token') || null)
-
   return (
-    <>
-      <GlobalStyle />
-      <BrowserRouter>
-        <Wrapper>
-          <AppRoutes 
-            isAuth={isAuth} 
-            setIsAuth={setIsAuth} 
-            token={token}
-            setToken={setToken}
-          />
-        </Wrapper>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <AuthProvider>
+        <TaskProvider>
+          <GlobalStyle />
+          <Wrapper>
+            <AppRoutes />
+          </Wrapper>
+        </TaskProvider>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

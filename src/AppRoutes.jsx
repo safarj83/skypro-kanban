@@ -8,23 +8,17 @@ import NewTask from './pages/NewTask/NewTask'
 import Exit from './pages/Exit/Exit'
 import NotFound from './pages/NotFound/NotFound'
 
-function AppRoutes({ isAuth, setIsAuth, token, setToken }) {
+function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<Login setIsAuth={setIsAuth} setToken={setToken} />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      <Route 
-        element={
-          <ProtectedRoute isAuth={isAuth}>
-            <Layout token={token} />
-          </ProtectedRoute>
-        }
-      >
+      <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route path="/" element={null} />
-        <Route path="/card/:id" element={<Card token={token} />} />
-        <Route path="/new-task" element={<NewTask token={token} />} />
-        <Route path="/exit" element={<Exit setIsAuth={setIsAuth} setToken={setToken} />} />
+        <Route path="/card/:id" element={<Card />} />
+        <Route path="/new-task" element={<NewTask />} />
+        <Route path="/exit" element={<Exit />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

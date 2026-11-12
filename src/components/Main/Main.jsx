@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Column from '../Column/Column'
-import { getTasks } from '../../services/tasks'
 import { MainWrapper, MainBlock, MainContent, LoadingText } from './Main.styled'
 import styled from 'styled-components'
+import { useTasks } from '../../context/TaskContext'
 
 const ErrorText = styled.div`
   text-align: center;
@@ -12,39 +12,17 @@ const ErrorText = styled.div`
   font-size: 18px;
 `
 
-function Main({ token }) {
-  const [tasks, setTasks] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-  
+function Main() {
+  const { tasks, isLoading, error, fetchTasks } = useTasks()
   const location = useLocation()
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      setError(null)
-      try {
-        const data = await getTasks(token)
-        setTasks(data)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     if (location.pathname === '/') {
-      fetchData()
+      fetchTasks()
     }
-  }, [token, location.pathname])
+  }, [location.pathname, fetchTasks])
 
-  const columns = [
-    'Без статуса',
-    'Нужно сделать',
-    'В работе',
-    'Тестирование',
-    'Готово',
-  ]
+  const columns = ['Без статуса', 'Нужно сделать', 'В работе', 'Тестирование', 'Готово']
 
   return (
     <MainWrapper>
@@ -57,16 +35,8 @@ function Main({ token }) {
           ) : (
             <MainContent>
               {columns.map((columnTitle) => {
-                const columnCards = tasks.filter(
-                  (card) => card.status === columnTitle
-                )
-                return (
-                  <Column
-                    key={columnTitle}
-                    title={columnTitle}
-                    cards={columnCards}
-                  />
-                )
+                const columnCards = tasks.filter((card) => card.status === columnTitle)
+                return <Column key={columnTitle} title={columnTitle} cards={columnCards} />
               })}
             </MainContent>
           )}

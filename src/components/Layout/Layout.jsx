@@ -1,15 +1,13 @@
 import { Outlet } from 'react-router-dom'
 import Header from '../Header/Header'
 import Main from '../Main/Main'
-
-function Layout({ token }) {
+function Layout() {
   return (
     <>
       <Header />
-      <Main token={token} />
+      <Main />
       <Outlet />
     </>
   )
 }
-
 export default Layout
