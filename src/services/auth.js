@@ -12,7 +12,7 @@ export const login = async (login, password) => {
     throw new Error(data.error || 'Ошибка при входе')
   }
   
-  return data.user // Возвращает объект пользователя с токеном
+  return data.user 
 }
 
 export const register = async (name, login, password) => {
@@ -27,5 +27,5 @@ export const register = async (name, login, password) => {
     throw new Error(data.error || 'Ошибка при регистрации')
   }
   
-  return data.result // Возвращает созданного пользователя
+  return data.result 
 }
