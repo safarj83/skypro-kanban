@@ -22,13 +22,19 @@ function PopNewCard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (!title.trim()) {
+      setError('Название задачи не может быть пустым или состоять из пробелов')
+      return
+    }
+    
     setIsLoading(true)
     setError(null)
 
     try {
       await addTask({
-        title: title || 'Новая задача',
-        description,
+        title: title.trim(),
+        description: description.trim(),
         topic,
         status: 'Без статуса',
         date: new Date().toISOString(),

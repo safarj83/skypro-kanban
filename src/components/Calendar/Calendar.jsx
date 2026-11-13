@@ -1,4 +1,4 @@
-function Calendar({ dateText }) {
+function Calendar({ dateText, dateValue }) {
   return (
     <div className="pop-new-card__calendar calendar">
       <p className="calendar__ttl subttl">Даты</p>
@@ -68,7 +68,9 @@ function Calendar({ dateText }) {
         </div>
         <input type="hidden" id="datepick_value" defaultValue="08.09.2023" />
         <div className="calendar__period">
-          <p className="calendar__p date-end">{dateText}</p>
+          <p className="calendar__p date-end">
+            {dateText} {dateValue && <span className="date-control">{dateValue}</span>}
+          </p>
         </div>
       </div>
     </div>
