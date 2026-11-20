@@ -2,20 +2,21 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthContext'
+import { toast } from 'react-toastify'
 
 const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #EAEEF6;
+  background-color: ${({ theme }) => theme.colors.background};
 `
 
 const RegForm = styled.form`
-  background: #FFF;
+  background: ${({ theme }) => theme.colors.surface};
   padding: 40px;
   border-radius: 10px;
-  border: 0.7px solid #D4DBE5;
+  border: 0.7px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
   width: 368px;
@@ -24,13 +25,21 @@ const RegForm = styled.form`
 const Title = styled.h2`
   text-align: center;
   margin-bottom: 20px;
+  color: ${({ theme }) => theme.colors.text};
 `
 
 const Input = styled.input`
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 8px;
-  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  border: 0.7px solid ${({ theme }) => theme.colors.border};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.text};
+  outline: none;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textSecondary};
+  }
 `
 
 const Button = styled.button`
@@ -48,25 +57,17 @@ const Button = styled.button`
   }
 `
 
-const ErrorText = styled.p`
-  color: red;
-  font-size: 12px;
-  text-align: center;
-  margin-bottom: 10px;
-`
-
 const StyledLink = styled(Link)`
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #94A6BE;
+  color: ${({ theme }) => theme.colors.textSecondary};
 `
 
 function Register() {
   const navigate = useNavigate()
   const { register } = useAuth()
   const [formData, setFormData] = useState({ name: '', login: '', password: '' })
-  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleChange = (e) => {
@@ -76,14 +77,13 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault()
-    setError(null)
     setIsLoading(true)
 
     try {
       await register(formData.name, formData.login, formData.password)
       navigate('/login')
     } catch (err) {
-      setError(err.message)
+      toast.error(err.message)
     } finally {
       setIsLoading(false)
     }
@@ -93,7 +93,6 @@ function Register() {
     <PageContainer>
       <RegForm onSubmit={handleRegister}>
         <Title>Регистрация</Title>
-        {error && <ErrorText>{error}</ErrorText>}
         <Input type="text" name="name" placeholder="Имя" value={formData.name} onChange={handleChange} required />
         <Input type="text" name="login" placeholder="Эл. почта" value={formData.login} onChange={handleChange} required />
         <Input type="password" name="password" placeholder="Пароль" value={formData.password} onChange={handleChange} required />

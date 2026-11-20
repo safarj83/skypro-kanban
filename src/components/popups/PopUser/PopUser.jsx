@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useTheme } from '../../../context/ThemeContext'
 import {
   PopUserWrapper,
   PopUserName,
@@ -7,18 +8,26 @@ import {
   PopUserBtn,
 } from './PopUser.styled'
 
-function PopUser({ isOpen, onClose }) {
+function PopUser({ isOpen, onClose, user }) {
+  const { isDark, toggleTheme } = useTheme()
+  
   if (!isOpen) return null
 
   return (
     <PopUserWrapper>
-      <PopUserName>Ivan Ivanov</PopUserName>
-      <PopUserMail>ivan.ivanov@gmail.com</PopUserMail>
+      <PopUserName>{user?.name || 'Пользователь'}</PopUserName>
+      <PopUserMail>{user?.login || 'email@example.com'}</PopUserMail>
       <PopUserTheme>
         <p>Темная тема</p>
-        <input type="checkbox" className="checkbox" name="checkbox" />
+        <input 
+          type="checkbox" 
+          className="checkbox" 
+          name="checkbox" 
+          checked={isDark}
+          onChange={toggleTheme}
+        />
       </PopUserTheme>
-         <PopUserBtn type="button" onClick={onClose}>
+      <PopUserBtn type="button" onClick={onClose}>
         <Link to="/exit">Выйти</Link>
       </PopUserBtn>
     </PopUserWrapper>

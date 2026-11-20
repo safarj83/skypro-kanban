@@ -50,7 +50,7 @@ export const PopUserTheme = styled.div`
     width: 24px;
     height: 13px;
     border-radius: 100px;
-    background: ${({ theme }) => theme.colors.background};
+    background: ${({ theme }) => theme.colors.toggleTrackBg}; 
     outline: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -65,7 +65,7 @@ export const PopUserTheme = styled.div`
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background-color: ${({ theme }) => theme.colors.textSecondary};
+    background-color: ${({ theme }) => theme.colors.toggleCircle}; 
     transition: 0.5s;
   }
 
@@ -78,11 +78,11 @@ export const PopUserBtn = styled.button`
   width: 72px;
   height: 30px;
   background: transparent;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.popUserBtnText}; 
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
+  border: 1px solid ${({ theme }) => theme.colors.popUserBtnBorder};
 
   a {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.popUserBtnText};
   }
 `

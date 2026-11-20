@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useCallback } from 'react'
-import { getTasks, addTask as addTaskApi, deleteTask as deleteTaskApi } from '../services/tasks'
+import { getTasks, addTask as addTaskApi, deleteTask as deleteTaskApi, updateTask as updateTaskApi } from '../services/tasks'
 import { useAuth } from './AuthContext'
 
 const TaskContext = createContext(null)
@@ -10,14 +10,16 @@ export const TaskProvider = ({ children }) => {
   const [error, setError] = useState(null)
   const { token } = useAuth()
 
-  const fetchTasks = useCallback(async () => {
+  const fetchTasks = useCallback(async (signal) => {
     setIsLoading(true)
     setError(null)
     try {
-      const data = await getTasks(token)
+      const data = await getTasks(token, signal) 
       setTasks(data)
     } catch (err) {
-      setError(err.message)
+      if (err.name !== 'AbortError') {
+        setError(err.message)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -33,8 +35,13 @@ export const TaskProvider = ({ children }) => {
     setTasks(updatedTasks)
   }, [token])
 
+  const updateTask = useCallback(async (id, taskData) => {
+    const updatedTasks = await updateTaskApi(id, token, taskData)
+    setTasks(updatedTasks)
+  }, [token])
+
   return (
-    <TaskContext.Provider value={{ tasks, isLoading, error, fetchTasks, addTask, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, isLoading, error, fetchTasks, addTask, deleteTask, updateTask }}>
       {children}
     </TaskContext.Provider>
   )

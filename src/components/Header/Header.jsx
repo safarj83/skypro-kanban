@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import PopUser from '../popups/PopUser/PopUser'
+import { useTheme } from '../../context/ThemeContext'
+import { useAuth } from '../../context/AuthContext'
 import {
   HeaderWrapper,
   HeaderBlock,
@@ -12,6 +14,8 @@ import {
 
 function Header() {
   const [isUserOpen, setIsUserOpen] = useState(false)
+  const { isDark } = useTheme()
+  const { user } = useAuth()
 
   const toggleUser = () => {
     setIsUserOpen((prev) => !prev)
@@ -21,30 +25,31 @@ function Header() {
     <HeaderWrapper>
       <div className="container">
         <HeaderBlock>
-          <HeaderLogo className="_show _light">
+          <HeaderLogo>
             <a href="" target="_self">
-              <img src="/images/logo.png" alt="logo" />
-            </a>
-          </HeaderLogo>
-          <HeaderLogo className="_dark">
-            <a href="" target="_self">
-              <img src="/images/logo_dark.png" alt="logo" />
+              <img 
+                src={isDark ? "/images/logo_dark.png" : "/images/logo.png"} 
+                alt="logo" 
+              />
             </a>
           </HeaderLogo>
           <HeaderNav>
-           <MainNewButton id="btnMainNew">
-  <Link to="/new-task">Создать новую задачу</Link>
-</MainNewButton>
+            <MainNewButton id="btnMainNew">
+              <Link to="/new-task">Создать новую задачу</Link>
+            </MainNewButton>
             <HeaderUser
-              href="#user-set-target"
               onClick={(e) => {
                 e.preventDefault()
                 toggleUser()
               }}
             >
-              Ivan Ivanov
+              {user?.name || 'Пользователь'}
             </HeaderUser>
-            <PopUser isOpen={isUserOpen} onClose={() => setIsUserOpen(false)} />
+            <PopUser 
+              isOpen={isUserOpen} 
+              onClose={() => setIsUserOpen(false)} 
+              user={user}
+            />
           </HeaderNav>
         </HeaderBlock>
       </div>

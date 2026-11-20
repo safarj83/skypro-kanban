@@ -1,9 +1,7 @@
-import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 
 function Exit() {
-  const navigate = useNavigate()
   const { logout } = useAuth()
 
   useEffect(() => {
@@ -15,7 +13,6 @@ function Exit() {
 
   const handleExit = () => {
     logout()
-    navigate('/login')
   }
 
   return (
@@ -27,7 +24,7 @@ function Exit() {
           </div>
           <div className="pop-exit__form-group">
             <button className="pop-exit__exit-yes _hover01" onClick={handleExit}>Да, выйти</button>
-            <button className="pop-exit__exit-no _hover03" onClick={() => navigate('/')}>Нет, остаться</button>
+            <a href="/" className="pop-exit__exit-no _hover03">Нет, остаться</a>
           </div>
         </div>
       </div>

@@ -85,7 +85,6 @@ export const CardContent = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   
-  /* Убираем фиолетовый цвет и подчеркивание у ссылок внутри карточки */
   a {
     text-decoration: none;
     color: inherit;

@@ -37,7 +37,7 @@ export const MainNewButton = styled.button`
   height: 30px;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.surface};
+  color: #FFFFFF; 
   border: none;
   font-size: 14px;
   line-height: 1;
@@ -46,7 +46,7 @@ export const MainNewButton = styled.button`
   cursor: pointer;
 
   a {
-    color: ${({ theme }) => theme.colors.surface};
+    color: #FFFFFF; 
   }
 
   &:hover {
@@ -62,7 +62,7 @@ export const HeaderUser = styled.a`
   justify-content: center;
   font-size: 14px;
   line-height: 20px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.headerText};
   cursor: pointer;
 
   &::after {
@@ -71,8 +71,8 @@ export const HeaderUser = styled.a`
     width: 6px;
     height: 6px;
     border-radius: 1px;
-    border-left: 1.9px solid ${({ theme }) => theme.colors.primary};
-    border-bottom: 1.9px solid ${({ theme }) => theme.colors.primary};
+    border-left: 1.9px solid ${({ theme }) => theme.colors.headerText}; 
+    border-bottom: 1.9px solid ${({ theme }) => theme.colors.headerText};
     transform: rotate(-45deg);
     margin: -6px 0 0 5px;
     padding: 0;
