@@ -27,5 +27,5 @@ export const register = async (name, login, password) => {
     throw new Error(data.error || 'Ошибка при регистрации')
   }
   
-  return data.result 
+  return data.result
 }

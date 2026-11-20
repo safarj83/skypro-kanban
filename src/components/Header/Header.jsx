@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PopUser from '../popups/PopUser/PopUser'
 import { useTheme } from '../../context/ThemeContext'
+import { useAuth } from '../../context/AuthContext'
 import {
   HeaderWrapper,
   HeaderBlock,
@@ -14,6 +15,7 @@ import {
 function Header() {
   const [isUserOpen, setIsUserOpen] = useState(false)
   const { isDark } = useTheme()
+  const { user } = useAuth()
 
   const toggleUser = () => {
     setIsUserOpen((prev) => !prev)
@@ -25,7 +27,6 @@ function Header() {
         <HeaderBlock>
           <HeaderLogo>
             <a href="" target="_self">
-              {}
               <img 
                 src={isDark ? "/images/logo_dark.png" : "/images/logo.png"} 
                 alt="logo" 
@@ -42,9 +43,13 @@ function Header() {
                 toggleUser()
               }}
             >
-              Ivan Ivanov
+              {user?.name || 'Пользователь'}
             </HeaderUser>
-            <PopUser isOpen={isUserOpen} onClose={() => setIsUserOpen(false)} />
+            <PopUser 
+              isOpen={isUserOpen} 
+              onClose={() => setIsUserOpen(false)} 
+              user={user}
+            />
           </HeaderNav>
         </HeaderBlock>
       </div>
